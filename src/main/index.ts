@@ -1,9 +1,11 @@
 import { app, shell, BrowserWindow, session, systemPreferences, IpcMainEvent, ipcMain } from 'electron'
-import { join } from 'path'
+import path, { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { DEFAULT_CONFIG } from 'node-carplay/node'
 import { Socket } from './Socket'
 import * as fs from 'fs';
+import fsExtra from 'fs-extra';
+
 
 // comment below line to allow running on non linux devices
 import {Canbus} from "./Canbus"
@@ -83,6 +85,8 @@ const handleSettingsReq = (_: IpcMainEvent ) => {
   console.log("settings request")
   mainWindow?.webContents.send('settings', config)
 }
+
+
 
 
 app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
@@ -199,6 +203,12 @@ app.whenReady().then(() => {
   ipcMain.on('getSettings', handleSettingsReq)
 
   ipcMain.on('saveSettings', saveSettings)
+
+  ipcMain.on('log-warning', (_, position: string) => {
+  const logLine = `${new Date().toISOString()} - ${position}\n`;
+  const logPath = path.join(app.getPath('userData'), 'warning-log.txt');
+  fs.appendFile(logPath, logLine).catch(console.error);
+});
 
   // ipcMain.on('startStream', startMostStream)
 

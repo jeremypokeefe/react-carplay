@@ -1,0 +1,57 @@
+.warning-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+.warning-icon {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: url('/warning-triangle.svg') no-repeat center center;
+    background-size: contain;
+    opacity: 0;
+    transform: scale(1);
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.warning-icon.active {
+    opacity: 1;
+    animation: pulse-blink 1.2s infinite ease-in-out;
+}
+
+.front_left {
+    top: 20px;
+    left: 20px;
+}
+
+.front_right {
+    top: 20px;
+    right: 20px;
+}
+
+.rear_left {
+    bottom: 20px;
+    left: 20px;
+}
+
+.rear_right {
+    bottom: 20px;
+    right: 20px;
+}
+
+@keyframes pulse-blink {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(1.2);
+    }
+}
